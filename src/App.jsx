@@ -1,4 +1,3 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { Container, Button, Flex, Modal, NumberInput, TextInput, Title, Stack, Group } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { Header } from "./layout/header/Header";
@@ -7,13 +6,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Filter from "./components/filter/Filter";
 import { useState } from "react";
 import MovieDesc from "./pages/MovieDesc";
-import { addMovie, setTitleFilter, setRateFilter, selectFilteredMovies, selectTitleFilter, selectRateFilter } from "./store/moviesSlice";
+import { useMoviesStore, useFilteredMovies } from "./store/moviesStore";
 
 function App() {
-  const dispatch = useDispatch();
-  const filteredMovies = useSelector(selectFilteredMovies);
-  const titleFilter = useSelector(selectTitleFilter);
-  const rateFilter = useSelector(selectRateFilter);
+  const filteredMovies = useFilteredMovies();
+  const titleFilter = useMoviesStore((state) => state.titleFilter);
+  const rateFilter = useMoviesStore((state) => state.rateFilter);
+  const setTitleFilter = useMoviesStore((state) => state.setTitleFilter);
+  const setRateFilter = useMoviesStore((state) => state.setRateFilter);
+  const addMovie = useMoviesStore((state) => state.addMovie);
   
   const [newMovie, setNewMovie] = useState({
     title: "",
@@ -25,10 +26,10 @@ function App() {
   const [opened, setOpened] = useState(false);
 
   const handleAddMovie = () => {
-    dispatch(addMovie({
+    addMovie({
       ...newMovie,
       rating: Number(newMovie.rating),
-    }));
+    });
     setOpened(false);
     setNewMovie({
       title: "",
@@ -58,8 +59,8 @@ function App() {
                 <Filter
                   title={titleFilter}
                   rate={rateFilter}
-                  onTitleChange={(value) => dispatch(setTitleFilter(value))}
-                  onRatingChange={(value) => dispatch(setRateFilter(value))}
+                  onTitleChange={setTitleFilter}
+                  onRatingChange={setRateFilter}
                 />
                 
                 <MovieList movies={filteredMovies} />

@@ -1,12 +1,11 @@
 import { Badge, Rating, Image, Text, Button, Container, Flex, Group, Stack, Title, Paper, Box } from "@mantine/core";
 import { IconArrowLeft, IconBookmark, IconShare } from "@tabler/icons-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectAllMovies } from "../store/moviesSlice";
+import { useMoviesStore } from "../store/moviesStore";
 
 export default function MovieDesc() {
     const {id} = useParams();
-    const movies = useSelector(selectAllMovies);
+    const movies = useMoviesStore((state) => state.movies);
     const movie = movies.find((m) => m.id === Number(id));
     const navigate = useNavigate();
 

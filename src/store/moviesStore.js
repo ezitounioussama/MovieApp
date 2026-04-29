@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { create } from 'zustand';
 
 const initialMovies = [
   {
@@ -43,42 +43,32 @@ const initialMovies = [
   },
 ];
 
-const moviesSlice = createSlice({
-  name: 'movies',
-  initialState: {
-    items: initialMovies,
-    titleFilter: '',
-    rateFilter: 0,
-  },
-  reducers: {
-    addMovie: (state, action) => {
-      const newMovie = {
-        ...action.payload,
-        id: state.items.length + 1,
-      };
-      state.items.push(newMovie);
-    },
-    setTitleFilter: (state, action) => {
-      state.titleFilter = action.payload;
-    },
-    setRateFilter: (state, action) => {
-      state.rateFilter = action.payload;
-    },
-  },
-});
+export const useMoviesStore = create((set) => ({
+  movies: initialMovies,
+  titleFilter: '',
+  rateFilter: 0,
 
-export const { addMovie, setTitleFilter, setRateFilter } = moviesSlice.actions;
+  addMovie: (newMovie) => set((state) => {
+    const newId = state.movies.length + 1;
+    console.log(`New movie added with ID: ${newId}`);
+    return {
+      movies: [...state.movies, { ...newMovie, id: newId }],
+    };
+  }),
 
-export const selectAllMovies = (state) => state.movies.items;
-export const selectTitleFilter = (state) => state.movies.titleFilter;
-export const selectRateFilter = (state) => state.movies.rateFilter;
-export const selectFilteredMovies = (state) => {
-  const { items, titleFilter, rateFilter } = state.movies;
-  return items.filter((movie) => {
+  setTitleFilter: (titleFilter) => set({ titleFilter }),
+
+  setRateFilter: (rateFilter) => set({ rateFilter }),
+}));
+
+export const useFilteredMovies = () => {
+  const movies = useMoviesStore((state) => state.movies);
+  const titleFilter = useMoviesStore((state) => state.titleFilter);
+  const rateFilter = useMoviesStore((state) => state.rateFilter);
+
+  return movies.filter((movie) => {
     const matchesTitle = movie.title.toLowerCase().includes(titleFilter.toLowerCase());
     const matchesRate = movie.rating >= rateFilter;
     return matchesTitle && matchesRate;
   });
 };
-
-export default moviesSlice.reducer;
