@@ -1,8 +1,5 @@
-import { IconHeart } from "@tabler/icons-react";
 import {
-  ActionIcon,
   Badge,
-  Button,
   Card,
   Group,
   Image,
@@ -12,24 +9,6 @@ import {
 import classes from "./MovieCard.module.css";
 import { useNavigate } from "react-router-dom";
 
-/*
-const mockdata = {
-  image:
-    'https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80',
-  title: 'Verudela Beach',
-  country: 'Croatia',
-  description:
-    'Completely renovated for the season 2020, Arena Verudela Bech Apartments are fully equipped and modernly furnished 4-star self-service apartments located on the Adriatic coastline by one of the most beautiful beaches in Pula.',
-  badges: [
-    { emoji: '☀️', label: 'Sunny weather' },
-    { emoji: '🦓', label: 'Onsite zoo' },
-    { emoji: '🌊', label: 'Sea' },
-    { emoji: '🌲', label: 'Nature' },
-    { emoji: '🤽', label: 'Water sports' },
-  ],
-};
-*/
-
 export function MovieCard({ movie }) {
   const { id, title, description, posterURL, rating } = movie;
 
@@ -38,19 +17,19 @@ export function MovieCard({ movie }) {
   return (
     <Card withBorder radius="md" p="md" className={classes.card} onClick={() => navigate(`/movie/${id}`)}>
       <Card.Section>
-        <Image src={posterURL} alt={title} height={180} />
+        <Image src={posterURL} alt={title} height={220} />
       </Card.Section>
 
       <Card.Section className={classes.section} mt="md">
         <Group justify="apart">
-          <Text fz="lg" fw={500}>
+          <Text fz="lg" fw={600} style={{ flex: 1 }}>
             {title}
           </Text>
-          <Badge size="sm" variant="light">
+          <Badge size="lg" variant="light" color="yellow">
             {rating}/5
           </Badge>
         </Group>
-        <Text fz="sm" mt="xs">
+        <Text fz="sm" mt="xs" lineClamp={2}>
           {description}
         </Text>
       </Card.Section>

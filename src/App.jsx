@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Modal, NumberInput, TextInput } from "@mantine/core";
-import { MovieCard } from "./components/card/MovieCard";
+import { Container, Button, Flex, Modal, NumberInput, TextInput, Title, Stack, Group } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { Header } from "./layout/header/Header";
 import MovieList from "./components/list/MovieList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -79,6 +79,14 @@ function App() {
     };
 
     setMovies([...movies, movie]);
+    setOpened(false);
+    setNewMovie({
+      title: "",
+      description: "",
+      posterURL: "",
+      rating: 0,
+      trailerLink: "",
+    });
   };
 
   return (
@@ -89,22 +97,29 @@ function App() {
           element={
             <>
               <Header />
-              <Box>
+              <Container size="xl" py="xl">
+                <Flex justify="space-between" align="center" mb="xl">
+                  <Title order={1}>Movies</Title>
+                  <Button leftSection={<IconPlus size={16} />} onClick={() => setOpened(true)}>
+                    Add Movie
+                  </Button>
+                </Flex>
+                
                 <Filter
                   title={titleFilter}
                   rate={rateFilter}
                   onTitleChange={setTitleFilter}
                   onRatingChange={setRateFilter}
                 />
-                <Button onClick={() => setOpened(true)}>Add a new Movie</Button>
-                <Flex gap={10} wrap={"wrap"} justify={"center"}>
-                  <MovieList movies={filteredMovies} />
-                </Flex>
-                <Modal opened={opened} onClose={() => setOpened(false)}>
+                
+                <MovieList movies={filteredMovies} />
+              </Container>
 
+              <Modal opened={opened} onClose={() => setOpened(false)} title="Add New Movie" size="lg">
+                <Stack>
                   <TextInput
-                    placeholder="enter movie title"
-                    label={"Title"}
+                    placeholder="Enter movie title"
+                    label="Title"
                     value={newMovie.title}
                     onChange={(e) =>
                       setNewMovie({ ...newMovie, title: e.target.value })
@@ -112,8 +127,8 @@ function App() {
                     required
                   />
                   <TextInput
-                    placeholder="enter movie description"
-                    label={"Description"}
+                    placeholder="Enter movie description"
+                    label="Description"
                     value={newMovie.description}
                     onChange={(e) =>
                       setNewMovie({ ...newMovie, description: e.target.value })
@@ -121,8 +136,8 @@ function App() {
                     required
                   />
                   <TextInput
-                    placeholder="enter poster URl"
-                    label={"Poster URL"}
+                    placeholder="Enter poster URL"
+                    label="Poster URL"
                     value={newMovie.posterURL}
                     onChange={(e) =>
                       setNewMovie({ ...newMovie, posterURL: e.target.value })
@@ -130,8 +145,8 @@ function App() {
                     required
                   />
                   <TextInput
-                    placeholder="enter movie trailer link"
-                    label={"Trailer link"}
+                    placeholder="Enter movie trailer link"
+                    label="Trailer Link"
                     value={newMovie.trailerLink}
                     onChange={(e) =>
                       setNewMovie({ ...newMovie, trailerLink: e.target.value })
@@ -141,17 +156,24 @@ function App() {
                   <NumberInput
                     min={0}
                     max={5}
-                    placeholder="enter movie rating"
-                    label={"Rating"}
+                    placeholder="Enter movie rating"
+                    label="Rating"
                     value={newMovie.rating}
                     onChange={(value) =>
                       setNewMovie({ ...newMovie, rating: value })
                     }
                     required
                   />
-                  <Button onClick={addMovie}>Add the movie</Button>
-                </Modal>
-              </Box>
+                  <Group justify="flex-end" mt="md">
+                    <Button variant="outline" onClick={() => setOpened(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={addMovie}>
+                      Add Movie
+                    </Button>
+                  </Group>
+                </Stack>
+              </Modal>
             </>
           }
         ></Route>

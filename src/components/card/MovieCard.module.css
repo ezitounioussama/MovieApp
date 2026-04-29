@@ -1,6 +1,13 @@
 .card {
   max-width: 400px;
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .section {
@@ -8,12 +15,6 @@
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
   padding-bottom: var(--mantine-spacing-md);
-}
-
-.like {
-  color: var(--mantine-color-red-6);
-  width: 20px;
-  height: 20px;
 }
 
 .label {
